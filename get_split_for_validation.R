@@ -1,3 +1,7 @@
+#' Splits up data with given foldid
+#' @param data A table  of data with n rows
+#' @param foldid A list of length n with values between 1 and m, m representing mthe maximum number of folds
+#' @param return A list, that contains two lists, both with length m. Each train_rows element contains the datapoints of fold x for training and each corresponding test_rows all datapoints of fold x for testing
 get_split_for_validation <-function(data, foldid){
   #set.seed(random_seed)
   #number_of_folds <- number_of_folds_for_validation  

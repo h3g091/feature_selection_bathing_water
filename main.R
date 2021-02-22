@@ -1,3 +1,4 @@
+
 library(roxygen2)
 library(glmnet)
 library(fhpredict)
@@ -10,7 +11,8 @@ library(caret)
 
 #automated method
 # add path of data. Data  
-data_path_isar<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Bayern/Isar/DATA_preprocessed_csv")
+#data_path_isar<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Bayern/Isar/DATA_preprocessed_csv")
+data_path_isar<-list(havel = "/Data/Daten_Bayern/Isar/DATA_preprocessed_csv")
 data_path_ilz<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Bayern/Ilz/DATA_preprocessed_csv")
 data_path_mosel<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Rhein_Mosel_Lahn/Mosel/DATA_preprocessed_csv")
 data_path_rhein<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Rhein_Mosel_Lahn/Rhein/DATA_preprocessed_csv")
@@ -48,14 +50,13 @@ build_river_tibble<-function(data_path, river_name, kleine_BW = F){
   train_data  <- river_data[training.samples, ]
   test_data <- river_data[-training.samples, ]
   
-  
-  #save  scale attributes
+  #scaling right before every fs 
+  ######## not neccessary
   train_data_full_scaled<-scale(train_data)
   scale_attributes_full <- attributes(train_data_full_scaled)
   train_data_full_scaled<-as.data.frame(train_data_full_scaled)
   
   ###for preprocessing data "whitening of features" 
-  # scaling functions
   scale_test_data_with_attributes<-function(data,attributes_from_scale){
   #  attributes_from_scale<-scale_attributes_full
     #data<-train_data_full
@@ -64,6 +65,8 @@ build_river_tibble<-function(data_path, river_name, kleine_BW = F){
     return(data_scaled)
   }
   rescale_data_with_attributes<-function(data,attributes_from_scale){
+    #  attributes_from_scale<-scale_attributes_full
+    #data<-train_data_full
     a<-sweep(data,2, attributes_from_scale$`scaled:scale`,FUN = "*" )
     data_scaled<-sweep(a,2, attributes_from_scale$`scaled:center`,FUN = "+" )
     return(data_scaled)

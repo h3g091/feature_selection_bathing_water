@@ -1,6 +1,52 @@
+# import_riverdata ------------------------------------------------------------
+#'
+#' Read existing River Data
+#'
+#' Read existing, preprocessed csv files with first column datetime and other
+#' columns variable information.
+#'
+#' @param path character-string to a DATA_preprocessed_csv directory
+#'
+#' @return Returns a list of data.frames containing the river data
+#' @export
+#' @importFrom readr read_csv
+#'
+
+import_riverdata <- function(path)
+{
+  csv_files <- dir(path, "\\.csv", full.names = TRUE)
+  
+  names(csv_files) <- gsub("\\.csv", "", tolower(basename(csv_files)))
+  
+  line1 <- lapply(csv_files, function(x) {
+    
+    scan(x, what = character(), sep = ",", nlines = 1, quiet = T)
+  })
+  
+  types <- lapply(line1, function(x) {
+    
+    paste0(c("T", rep("d", length(x) - 1)), collapse = "")
+  })
+  
+  result <- lapply(names(csv_files), function(x) {
+    
+    readr::read_csv(csv_files[x], col_types = types[[x]])
+  })
+  
+  stats::setNames(result, names(csv_files))
+}
+
+#'Preprocess existing River Data stored in the given path as csv files.
+#'
+#' @param path string in which the data_preprocesses_csv files directory
+#' @param river_name name of the bathing site or river name as it is shown in tibble
+#' @param kleine_BW TRUE/FALSE value if Data from kleine Badewiese is used. Some inconsistencies in the data haave led to extra needed steps to treat the data the same
+#' @return returns tibble containing the preprocessed river data
 preprocess_river_data_from_path <- function(data_path, river_name, kleine_BW=F){
+  ##example of given params
   #data_path<-"/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/kleine_Badewiese/Havel/DATA_preprocessed_csv"
   #river_name<- "kleine badewiese"
+  
   river_paths<-data_path
   river_list_data<-list()
   
@@ -67,16 +113,16 @@ preprocess_river_data_from_path <- function(data_path, river_name, kleine_BW=F){
     }
   }
   
-  river_data <- lapply(river_paths, kwb.flusshygiene::import_riverdata)
+  river_data <- lapply(river_paths, import_riverdata)
   names(river_data) <- river_name
-  #renaming of columns
+  #renaming of columns for kbw data
   if(kleine_BW ==T){
   colnames(river_data$`kleine badewiese`$r_radolan_2350)[2] <- "r"
-    
+  
   }
   
   
-  #river with lag days
+  #river data with lag days
   {
     river_data_ts <- lapply(river_data, function(river_list){
       
@@ -142,7 +188,7 @@ preprocess_river_data_from_path <- function(data_path, river_name, kleine_BW=F){
     })  
   }
   
-  
+  #pattern which variables to select. 
   pattern = "(i_mean|q_mean|r_mean|ka_mean)"
   
   riverdata <- river_data_ts
@@ -152,12 +198,11 @@ preprocess_river_data_from_path <- function(data_path, river_name, kleine_BW=F){
   # variables for interaction get replaced by q_new (remove q_old)
   vars1 <- (riverdata[-1] %>% unroll_physical_data() %>%
               lapply(names) %>% unlist() %>% unique())[-1]
-  
+  #only use standardized named variables. 
   vars2 <- vars1[stringr::str_detect(vars1, pattern)]
   # prepare formulas
-  
   data <- process_model_riverdata(riverdata, c("log_e.coli", vars2)) %>%  dplyr::select(-datum) 
-  #get rid of tiefwerder variable that is double
+  #get rid of tiefwerder variable that is double # only for "kleine Badewiese" data neccessary
   data<-(data %>% select(- contains("tiefwerder")))
   data <- na.omit(data)
   
