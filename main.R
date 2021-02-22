@@ -28,7 +28,7 @@ data_path_kleine_badewiese<-list(havel = "Data/kleine_Badewiese/Havel/DATA_prepr
 #' @return return tibble of results
 build_river_tibble<-function(data_path, river_name, kleine_BW = F){
   
-  #data_path<-data_path_mosel
+  #data_path<-data_path_isar
   #river_name<- "Isar"
   #kleine_BW = F
   ##preprocesses river data and 
