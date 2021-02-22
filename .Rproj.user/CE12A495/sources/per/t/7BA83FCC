@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1613988203247.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "58|72|64|2|\n",
+    "hash" : "4198242894",
+    "id" : "7BA83FCC",
+    "lastKnownWriteTime" : 1613989079,
+    "last_content_update" : 1613989079135,
+    "path" : "~/Masterarbeit_lokal/Masterprojekt/feature_selection_bathing_water/main.R",
+    "project_path" : "main.R",
+    "properties" : {
+        "cursorPosition" : "65,69",
+        "scrollLine" : "51"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
