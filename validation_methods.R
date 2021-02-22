@@ -54,8 +54,7 @@ rsq <- function (x, y) cor(x, y) ^ 2
     
     ##### each of the folds 1 to 5 
     for(fold_indx in 1:5){
-      #first_fold
-      #fold_indx <- 2
+      
       data_train_fold <- data_train[[fold_indx]]
       data_test_fold  <- data_test[[fold_indx]]
       
@@ -86,9 +85,6 @@ rsq <- function (x, y) cor(x, y) ^ 2
       percentile_train_97_5<- qnorm(0.975, mean = pred_test, sd = sd_pred_train_to_true)
       
       
-      #evaluating ther model has to be classified correctly with every single test train split
-      #--> here 5 different splits, if all validations correct than everywhere ==5
-      
       below95 = test_bacteria < percentile_train_95
       
       below90 = test_bacteria < percentile_train_90
@@ -113,10 +109,6 @@ rsq <- function (x, y) cor(x, y) ^ 2
         dummy_df$passed_folds <- dummy_df$passed_folds+ 1
       }
       
-      
-      
-      
-      
       list_test_error <- append(list_test_error,list(mean((pred_test- data_test_fold$log_e.coli)^2)))
       list_sd_pred_train_to_true <-append(list_sd_pred_train_to_true, list(sd_pred_train_to_true))        
       
@@ -140,52 +132,16 @@ rsq <- function (x, y) cor(x, y) ^ 2
 #' @param return A logical, if the model passes the percentage-coverage criteria on test-set
 {     
   validation_on_test_glmnet <- function(model, train_data_matrix_with_interactions, test_data_matrix_with_interactions, data_train, data_test){      
-   # model <- lasso_1se_model 
-  #  data_train<- train_data_full_scaled
-  #  data_test<- test_data_full_scaled
-    
-    #train_data_matrix_with_interactions <- sparse.model.matrix(log_e.coli~(.)^2, data_train)[,-1]
-    #test_data_matrix_with_interactions <- sparse.model.matrix(log_e.coli~(.)^2, data_test)[,-1]
-    
    
-    
-    #formel<-as.character(formula(step_5_aic_models_full_dataset))[3]
-    
-    
-    #data_train <-validation_train_data_random_split[[1]]
-    #data_test <-validation_test_data_random_split[[1]]
-    
-    
-    
-    #dummy_df <- data.frame(0,0,0,0,0,0,0,0,0)
-    #names(dummy_df) <- c("mean_MSE", "mean_R2", "n_obs", "mean_sd_pred_train_to_true","in95", "below95", "below90", "in50")
-    #fold_indx <- 1
-    
-    #river_stat_tests$in95 <- river_stat_tests$below95 <-river_stat_tests$below90 <- river_stat_tests$in50 <- river_stat_tests$MSE <- 0
-    #data_train_fold <- data_train[[fold_indx]]
-    #data_test_fold  <- data_test[[fold_indx]]
     train_bacteria  <- data_train$log_e.coli
     test_bacteria <- data_test$log_e.coli
     
     #prediction
-    #pred_train <- predict(linear_model,newdata = data_train_fold)
-    #pred_test <- predict(linear_model, newdata =  data_test_fold)
+    
     pred_train <- model %>% predict(train_data_matrix_with_interactions) %>% as.vector()
     pred_test <- model %>% predict(test_data_matrix_with_interactions) %>% as.vector()
-    
-    
-    #r2<- 1 - sum((data_train_fold$log_e.coli-pred_train)^2)/sum((data_train_fold$log_e.coli-mean(data_train_fold$log_e.coli))^2)
-    
-    #rsq <- function (x, y) cor(x, y) ^ 2
-    #rsq( train_bacteria, pred_train)
-    #e<-cbind(as.data.frame(train_bacteria), as.data.frame(pred_train))
-    #e$error <- sqrt((e$train_bacteria - e$pred_train)^2)
-    
-    
-    
-    #adj_R2 <- 1-((1-r2)*(n_obs-1))/(n_obs-n_features-1)
-    #list_R2_iteration <-adj_R2
-    
+
+
     #get sd from difference between train_bacteria_true to the predicted! mean is the prediction
     sd_pred_train_to_true<-sqrt((sum((train_bacteria - pred_train)^ 2))/length(train_bacteria))
     
@@ -209,13 +165,7 @@ rsq <- function (x, y) cor(x, y) ^ 2
     
     
     
-    
-    #dummy_df$in95 <- dummy_df$in95 + test_beta(true = sum(within95), false = sum(!within95), percentile = .95 )
-    #dummy_df$below95 <- dummy_df$below95+test_beta(true = sum(below95), false = sum(!below95), percentile = .95 )
-    #dummy_df$below90 <- dummy_df$below90+test_beta(true = sum(below90), false = sum(!below90), percentile = .90 )
-    #dummy_df$in50 <- dummy_df$in50+test_beta(true = sum(within50), false = sum(!within50), percentile = .5)
-    
-    
+ 
     return(test_beta(is_true = within95, percentile = .95 ) &
              test_beta(is_true = below95, percentile = .95 )&
              test_beta(is_true = below90, percentile = .90 )&
