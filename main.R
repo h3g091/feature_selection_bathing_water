@@ -48,13 +48,14 @@ build_river_tibble<-function(data_path, river_name, kleine_BW = F){
   train_data  <- river_data[training.samples, ]
   test_data <- river_data[-training.samples, ]
   
-  #scaling right before every fs 
-  ######## not neccessary
+  
+  #save  scale attributes
   train_data_full_scaled<-scale(train_data)
   scale_attributes_full <- attributes(train_data_full_scaled)
   train_data_full_scaled<-as.data.frame(train_data_full_scaled)
   
   ###for preprocessing data "whitening of features" 
+  # scaling functions
   scale_test_data_with_attributes<-function(data,attributes_from_scale){
   #  attributes_from_scale<-scale_attributes_full
     #data<-train_data_full
@@ -63,8 +64,6 @@ build_river_tibble<-function(data_path, river_name, kleine_BW = F){
     return(data_scaled)
   }
   rescale_data_with_attributes<-function(data,attributes_from_scale){
-    #  attributes_from_scale<-scale_attributes_full
-    #data<-train_data_full
     a<-sweep(data,2, attributes_from_scale$`scaled:scale`,FUN = "*" )
     data_scaled<-sweep(a,2, attributes_from_scale$`scaled:center`,FUN = "+" )
     return(data_scaled)
