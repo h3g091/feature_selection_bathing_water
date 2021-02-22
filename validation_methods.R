@@ -154,9 +154,6 @@ rsq <- function (x, y) cor(x, y) ^ 2
     percentile_train_95<- qnorm(0.95, mean = pred_test, sd = sd_pred_train_to_true)
     percentile_train_97_5<- qnorm(0.975, mean = pred_test, sd = sd_pred_train_to_true)
     
-    #evaluating ther model has to be classified correctly with every single test train split
-    #--> here 5 different splits, if all validations correct than everywhere ==5
-    
     below95 = test_bacteria < percentile_train_95
     below90 = test_bacteria < percentile_train_90
     within95 = test_bacteria < percentile_train_97_5 & test_bacteria > percentile_train_2_5
@@ -235,12 +232,7 @@ check_if_all_folds_validated <-function(validation_df){
 #' @param all_test_iterations_validation_scaled_river A list  of lists of dataframes. all_train_iterations_validation_scaled_river
 #' @param return A list object with two lists of length m, the number of different iteratoions. - p.ex. 50 if 50 different splits are used. The first list contains the number of iterations a model passed all five folds in the five fold cross validation. The second one contains each of the validation dataframes for each of the iterations
 get_validation_per_unique_formula_over_all_validion_iterations<-function(unique_river_algo_formulas, all_train_iterations_validation_scaled_river, all_test_iterations_validation_scaled_river){
-  #unique_river_algo_formulas<-formula(step_5_aic_models_full_dataset)
-  #unique_river_algo_formulas<-unique_formulas_river
-  #all_train_iterations_validation_scaled_river<-validation_train_data_random_split
-  #all_test_iterations_validation_scaled_river<-validation_test_data_random_split
-  #<-all_test_iterations_validation_scaled_river[[river_number]]
-  #all_test_iterations_validation_scaled_river<-all_test_iterations_validation_scaled_only_validation_data[[1]]
+ 
   list_number_validated<- list()
   list_validation_dfs_lasso_havel <- list()
   for(formula_indx in 1: length(unique_river_algo_formulas)){
