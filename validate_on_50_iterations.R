@@ -27,19 +27,20 @@ rescale_data_with_attributes<-function(data,attributes_from_scale){
 }
 #automated method
 #add path for data here
-data_path_isar<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Bayern/Isar/DATA_preprocessed_csv")
-data_path_ilz<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Bayern/Ilz/DATA_preprocessed_csv")
-data_path_mosel<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Rhein_Mosel_Lahn/Mosel/DATA_preprocessed_csv")
-data_path_rhein<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Rhein_Mosel_Lahn/Rhein/DATA_preprocessed_csv")
-data_path_ruhr <- list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Ruhr/Ruhr/DATA_preprocessed_csv")
-data_path_kleine_badewiese<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/kleine_Badewiese/Havel/DATA_preprocessed_csv")
+
+data_path_isar<-list(havel = "Data/Daten_Bayern/Isar/DATA_preprocessed_csv")
+data_path_ilz<-list(havel = "Data/Daten_Bayern/Ilz/DATA_preprocessed_csv")
+data_path_mosel<-list(havel = "Data/Daten_Rhein_Mosel_Lahn/Mosel/DATA_preprocessed_csv")
+data_path_rhein<-list(havel = "Data/Daten_Rhein_Mosel_Lahn/Rhein/DATA_preprocessed_csv")
+data_path_ruhr <- list(havel = "Data/Daten_Ruhr/Ruhr/DATA_preprocessed_csv")
+data_path_kleine_badewiese<-list(havel = "Data/kleine_Badewiese/Havel/DATA_preprocessed_csv")
 
 
 #river_name <- "kleine badewiese"
 #data_path_river <- data_path_kleine_badewiese
 #kleine_BW<- T
 
-big_tibble<-readRDS("results/big_tibble/big_tibble.rds")
+big_tibble<-readRDS("results/big_tibble.rds")
 
 get_dataset_for_5_fold<-function(data_path, river_name, kleine_BW){
     #data_path<- data_path_isar
@@ -136,16 +137,11 @@ validation_occurence_big_table<-do.call("rbind", list(vallidation_occurence_klei
                       vallidation_occurence_mosel,
                       vallidation_occurence_rhein,
                       vallidation_occurence_Ruhr))
-#five_fold_validation_river_tible<-as_tibble(rep(river_name, 6))
-#five_fold_validation_river_tible<-cbind(five_fold_validation_river_tible, unique(big_tibble$Method))
-
-
-#features_step_5_aic<-as.character(big_tibble%>% filter(Method== "step_5_aic", River == river_name)%>% select(features ))
 
 
 river_validation_tibble<-validation_occurence_big_table %>% pivot_wider(names_from = N_Folds, values_from = Frequency)
 
-###replace NA wit 0
+###replace all NA with 0
 long_temp<-river_validation_tibble%>% replace_na(list(`0`= 0,`1`= 0, `2`= 0,`3`= 0,`4`= 0,`5`= 0))
 
 long_temp<-long_temp%>% gather(`Number of folds all criteria are passed`, `Occurence in 100 Iterations`, - Method, - River)
