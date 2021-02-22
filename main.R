@@ -1,4 +1,3 @@
-
 library(roxygen2)
 library(glmnet)
 library(fhpredict)
@@ -11,23 +10,12 @@ library(caret)
 
 #automated method
 # add path of data. Data  
-#data_path_isar<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Bayern/Isar/DATA_preprocessed_csv")
 data_path_isar<-list(havel = "Data/Daten_Bayern/Isar/DATA_preprocessed_csv")
 data_path_ilz<-list(havel = "Data/Daten_Bayern/Ilz/DATA_preprocessed_csv")
 data_path_mosel<-list(havel = "Data/Daten_Rhein_Mosel_Lahn/Mosel/DATA_preprocessed_csv")
 data_path_rhein<-list(havel = "Data/Daten_Rhein_Mosel_Lahn/Rhein/DATA_preprocessed_csv")
 data_path_ruhr <- list(havel = "Data/Daten_Ruhr/Ruhr/DATA_preprocessed_csv")
 data_path_kleine_badewiese<-list(havel = "Data/kleine_Badewiese/Havel/DATA_preprocessed_csv")
-
-
-#data_path_ilz<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Bayern/Ilz/DATA_preprocessed_csv")
-#data_path_mosel<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Rhein_Mosel_Lahn/Mosel/DATA_preprocessed_csv")
-#data_path_rhein<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Rhein_Mosel_Lahn/Rhein/DATA_preprocessed_csv")
-#data_path_ruhr <- list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Ruhr/Ruhr/DATA_preprocessed_csv")
-#data_path_kleine_badewiese<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/kleine_Badewiese/Havel/DATA_preprocessed_csv")
-
-
-
 
 
 #' Builds tibble that contains the results of the validation and accuracy of the build models for a specific dataset.
@@ -295,9 +283,10 @@ big_tibble$`Test R2`<-round(big_tibble$`Test R2`,2)
 
 big_tibble$n_features <- unlist(lapply(big_tibble$features, str_count, "\\+"))+1
 big_tibble<-big_tibble[,c(1:(ncol(big_tibble)-2),10,9)]
-#big_tibble$n_features
+
 print(big_tibble, n=40)
-overwrite_big_tibble <- F
+
+overwrite_big_tibble <- T
 if(overwrite_big_tibble){
   
 saveRDS(big_tibble,"results/big_tibble.rds")
@@ -305,8 +294,3 @@ saveRDS(big_tibble,"results/big_tibble.rds")
 
 
 writexl::write_xlsx(big_tibble,"results/result_dataframe_one_split.xlsx")
-#writexl::write_xlsx(big_tibble,"/Users/heiko.langer/Masterarbeit_lokal/Masterprojekt/automated_method/last_try_to_fit_timos_expectation/results/new_results.xlsx")
-#write.csv(big_tibble, file = "/Users/heiko.langer/Masterarbeit_lokal/Masterprojekt/automated_method/last_try_to_fit_timos_expectation/results/new_results.csv")
-#take only that are at least 10 biggest valdiations!!
-
-
