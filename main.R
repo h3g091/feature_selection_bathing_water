@@ -12,12 +12,19 @@ library(caret)
 #automated method
 # add path of data. Data  
 #data_path_isar<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Bayern/Isar/DATA_preprocessed_csv")
-data_path_isar<-list(havel = "/Data/Daten_Bayern/Isar/DATA_preprocessed_csv")
-data_path_ilz<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Bayern/Ilz/DATA_preprocessed_csv")
-data_path_mosel<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Rhein_Mosel_Lahn/Mosel/DATA_preprocessed_csv")
-data_path_rhein<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Rhein_Mosel_Lahn/Rhein/DATA_preprocessed_csv")
-data_path_ruhr <- list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Ruhr/Ruhr/DATA_preprocessed_csv")
-data_path_kleine_badewiese<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/kleine_Badewiese/Havel/DATA_preprocessed_csv")
+data_path_isar<-list(havel = "Data/Daten_Bayern/Isar/DATA_preprocessed_csv")
+data_path_ilz<-list(havel = "Data/Daten_Bayern/Ilz/DATA_preprocessed_csv")
+data_path_mosel<-list(havel = "Data/Daten_Rhein_Mosel_Lahn/Mosel/DATA_preprocessed_csv")
+data_path_rhein<-list(havel = "Data/Daten_Rhein_Mosel_Lahn/Rhein/DATA_preprocessed_csv")
+data_path_ruhr <- list(havel = "Data/Daten_Ruhr/Ruhr/DATA_preprocessed_csv")
+data_path_kleine_badewiese<-list(havel = "Data/kleine_Badewiese/Havel/DATA_preprocessed_csv")
+
+
+#data_path_ilz<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Bayern/Ilz/DATA_preprocessed_csv")
+#data_path_mosel<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Rhein_Mosel_Lahn/Mosel/DATA_preprocessed_csv")
+#data_path_rhein<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Rhein_Mosel_Lahn/Rhein/DATA_preprocessed_csv")
+#data_path_ruhr <- list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/Daten_Ruhr/Ruhr/DATA_preprocessed_csv")
+#data_path_kleine_badewiese<-list(havel = "/Users/heiko.langer/Masterarbeit_lokal/Data_preprocess/kleine_Badewiese/Havel/DATA_preprocessed_csv")
 
 
 
@@ -293,11 +300,12 @@ print(big_tibble, n=40)
 overwrite_big_tibble <- F
 if(overwrite_big_tibble){
   
-saveRDS(big_tibble,"results/big_tibble/big_tibble.rds")
+saveRDS(big_tibble,"results/big_tibble.rds")
 }
 
 
-writexl::write_xlsx(big_tibble,"/Users/heiko.langer/Masterarbeit_lokal/Masterprojekt/automated_method/last_try_to_fit_timos_expectation/results/new_results.xlsx")
+writexl::write_xlsx(big_tibble,"results/result_dataframe_one_split.xlsx")
+#writexl::write_xlsx(big_tibble,"/Users/heiko.langer/Masterarbeit_lokal/Masterprojekt/automated_method/last_try_to_fit_timos_expectation/results/new_results.xlsx")
 #write.csv(big_tibble, file = "/Users/heiko.langer/Masterarbeit_lokal/Masterprojekt/automated_method/last_try_to_fit_timos_expectation/results/new_results.csv")
 #take only that are at least 10 biggest valdiations!!
 
