@@ -1,12 +1,19 @@
-library(roxygen2)
-library(glmnet)
-library(fhpredict)
-library(tidyverse)
-#important
-library(kwb.flusshygiene)
-library(dplyr)
-library(Matrix)
-library(caret)
+##  specify the packages of interest
+packages = c("roxygen2", "glmnet",
+              "tidyverse", "kwb.flusshygiene"
+             , "dplyr", "Matrix", "caret")
+
+##  load or install&load all
+package.check <- lapply(
+  packages,
+  FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE)
+      library(x, character.only = TRUE)
+    }
+  }
+)
+
 
 #automated method
 # add path of data. Data  
@@ -34,7 +41,7 @@ build_river_tibble<-function(data_path, river_name, kleine_BW = F){
   ##preprocesses river data and 
   source("read_and_lag_preprocessed_data.R")
   river_data<-preprocess_river_data_from_path(data_path, river_name, kleine_BW)
-  rm(preprocess_river_data_from_path)
+  #rm(preprocess_river_data_from_path)
   # fix pseudo random seed to get always same results
   seed <- 123
   
